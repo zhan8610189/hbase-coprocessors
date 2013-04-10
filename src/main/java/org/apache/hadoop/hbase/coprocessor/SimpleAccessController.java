@@ -125,12 +125,24 @@ public class SimpleAccessController extends BaseMasterObserver {
   }
 
   private void checkWhiteTable(String tableName) throws IOException {
-    if (whiteTableList.contains(tableName)) {
+    if (whiteTableList.contains(tableName) || isPrefixWhiteTable(tableName)) {
       String msg = "Table " + tableName
           + " can not deleted. if you want to, please contact the HBase administrator(renren.dap@renren-inc.com).";
       LOG.warn(msg);
       throw new IOException(msg);
     }
+  }
+
+  private boolean isPrefixWhiteTable(String tableName) {
+    for (String prefix : whiteTableList) {
+      if (prefix.charAt(prefix.length() - 1) == '*') {
+        prefix = prefix.substring(0, prefix.length() - 1);
+      }
+      if (tableName.startsWith(prefix)) {
+        return true;
+      }
+    }
+    return false;
   }
 
   @Override
