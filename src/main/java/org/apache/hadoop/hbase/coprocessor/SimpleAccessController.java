@@ -137,9 +137,9 @@ public class SimpleAccessController extends BaseMasterObserver {
     for (String prefix : whiteTableList) {
       if (prefix.charAt(prefix.length() - 1) == '*') {
         prefix = prefix.substring(0, prefix.length() - 1);
-      }
-      if (tableName.startsWith(prefix)) {
-        return true;
+        if (tableName.startsWith(prefix)) {
+          return true;
+        }
       }
     }
     return false;
